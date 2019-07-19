@@ -110,3 +110,7 @@
     (other-window 1))
   (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
 #+END_SRC
+* leuven
+#+BEGIN_VERSE emacs-lisp
+  (setq org-fontify-whole-heading-line t)
+#+END_VERSE
