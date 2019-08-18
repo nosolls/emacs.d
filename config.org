@@ -44,6 +44,10 @@
 			      ))
   (electric-pair-mode t)
 #+END_SRC
+** Use ESC for C-g
+#+BEGIN_SRC emacs-lisp
+  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+#+END_SRC
 * Terminal
 ** Setting default shell to bash
 #+BEGIN_SRC emacs-lisp
@@ -203,8 +207,6 @@
          '("a" "r" "s" "t" "n" "e" "i"))
     :bind
     ([remap other-window] . switch-window))
-
-  (global-set-key (kbd "C-o") 'switch-window)
 #+END_SRC
 * Window Splitting
 #+BEGIN_SRC emacs-lisp
@@ -213,14 +215,12 @@
     (split-window-below)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
 
   (defun split-and-follow-vertically ()
     (interactive)
     (split-window-right)
     (balance-windows)
     (other-window 1))
-  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
 #+END_SRC
 * Rainbow
 ** Easier parantheses tracking
@@ -257,7 +257,7 @@
     (diminish 'beacon-mode)
     (diminish 'which-key))
 #+END_SRC
-* xah fly keys
+* Xah fly keys
 ** Manual Install
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
