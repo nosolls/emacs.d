@@ -1,20 +1,27 @@
+;; Garbage collection
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+
+(defvar startup/file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+(defun startup/revert-file-name-handler-alist ()
+  (setq file-name-handler-alist startup/file-name-handler-alist))
+
+(defun startup/reset-gc ()
+  (setq gc-cons-threshold 16777216
+	gc-cons-percentage 0.1))
+
+(add-hook 'emacs-startup-hook 'startup/revert-file-name-handler-alist)
+(add-hook 'emacs-startup-hook 'startup/reset-gc)
+
+;; melpa
+
 (require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  (when no-ssl
-    (warn "\
-Your version of Emacs does not support SSL connections,
-which is unsafe because it allows man-in-the-middle attacks.
-There are two things you can do about this warning:
-1. Install an Emacs version that does support SSL and be safe.
-2. Remove this warning from your init file so you won't see it again."))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+(setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
+			 ("gnu"   . "http://elpa.gnu.org/packages/")
+			 ("melpa" . "https://melpa.org/packages/")
+			 ("org"   . "https://orgmode.org/elpa/")))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -27,33 +34,6 @@ There are two things you can do about this warning:
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
 
-(setq make-backup-file nil)
-(setq auto-save-default nil)
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(global-set-key (kbd "<s-return>") 'ansi-term)
-(setq scroll-conservatively 100)
-(setq ring-bell-function 'ignore)
-
-(when window-system (global-hl-line-mode t))
-(when window-system (global-prettify-symbols-mode t))
-
-(use-package which-key
-  :ensure t
-  :init
-  (which-key-mode))
-
-(use-package beacon
-  :ensure t
-  :init
-  (beacon-mode 1))
-
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(setq inhibit-startup-message t)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -65,10 +45,18 @@ There are two things you can do about this warning:
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(package-selected-packages
    (quote
-    (beacon which-key switch-window rainbow-mode avy smex ido-vertical-mode org-bullets spacemacs-theme use-package))))
+    (magit xah-fly-keys diminish spaceline beacon which-key switch-window rainbow-mode avy smex ido-vertical-mode org-bullets spacemacs-theme use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Terminus")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Terminus"))))
+ '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+ '(org-level-4 ((t (:inherit outline-4 :height 0.7))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.1))))
+ '(org-level-6 ((t (:inherit outline-6 :height 1.1))))
+ '(org-level-7 ((t (:inherit outline-7 :height 1.1))))
+ '(org-level-8 ((t (:inherit outline-5 :height 0.7)))))
