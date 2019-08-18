@@ -238,3 +238,68 @@
     :init
     (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
+* modeline
+** Spaceline
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq powerline-default-separator (quote arrow))
+    (spaceline-spacemacs-theme))
+#+END_SRC
+** Diminish (hides minor modes)
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'hungry-delete-mode)
+    (diminish 'beacon-mode)
+    (diminish 'which-key))
+#+END_SRC
+* xah fly keys
+** Manual Install
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+  (require 'xah-fly-keys)
+#+END_SRC
+** Creates layout (basically mod-dh, only m and k are swapped)
+#+BEGIN_SRC emacs-lisp
+  (defvar xah--dvorak-to-colemak-mod-dh-matrix-kmap
+    '(("'" . "q")
+      ("," . "w")
+      ("." . "f")
+      ("p" . "p")
+      ("y" . "b")
+      ("f" . "j")
+      ("g" . "l")
+      ("c" . "u")
+      ("r" . "y")
+      ("l" . ";")
+      ("a" . "a")
+      ("o" . "r")
+      ("e" . "s")
+      ("u" . "t")
+      ("i" . "g")
+      ("d" . "m")
+      ("h" . "n")
+      ("t" . "e")
+      ("n" . "i")
+      ("s" . "o")
+      (";" . "z")
+      ("q" . "q")
+      ("j" . "c")
+      ("k" . "d")
+      ("x" . "v")
+      ("b" . "k")
+      ("m" . "h")
+      ("w" . ",")
+      ("v" . ".")
+      ("z" . "/")))
+#+END_SRC
+** Sets layout and activates
+#+BEGIN_SRC emacs-lisp
+  (xah-fly-keys-set-layout "colemak-mod-dh-matrix")
+  (xah-fly-keys 1)
+#+END_SRC
