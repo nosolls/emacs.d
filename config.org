@@ -1,3 +1,109 @@
+* Theme
+** Cyberpunk
+#+BEGIN_SRC emacs-lisp
+  (use-package cyberpunk-theme
+  :ensure t
+  :init
+    (load-theme 'cyberpunk t))
+#+END_SRC
+* Xah Fly Keys
+** Save your hands
+#+BEGIN_SRC emacs-lisp
+  (use-package xah-fly-keys
+    :ensure t)
+#+END_SRC
+** My layout
+#+BEGIN_SRC emacs-lisp
+  ;; create layout
+  (defvar xah--dvorak-to-colemak-mod-dh-matrix-kmap
+   '(("'" . "q")
+     ("," . "w")
+     ("." . "f")
+     ("p" . "p")
+     ("y" . "b")
+     ("f" . "j")
+     ("g" . "l")
+     ("c" . "u")
+     ("r" . "y")
+     ("l" . ";")
+     ("a" . "a")
+     ("o" . "r")
+     ("e" . "s")
+     ("u" . "t")
+     ("i" . "g")
+     ("d" . "m")
+     ("h" . "n")
+     ("t" . "e")
+     ("n" . "i")
+     ("s" . "o")
+     (";" . "z")
+     ("q" . "x")
+     ("j" . "c")
+     ("k" . "d")
+     ("x" . "v")
+     ("b" . "k")
+     ("m" . "h")
+     ("w" . ",")
+     ("v" . ".")
+     ("z" . "/")))
+  ;; set layout
+  (xah-fly-keys-set-layout 'colemak-mod-dh-matrix)
+  (xah-fly-keys 1) 
+#+END_SRC
+** Switch-Window
+#+BEGIN_SRC emacs-lisp
+  (use-package switch-window
+    :ensure t
+    :config
+    (setq switch-window-input-style 'minibuffer)
+    (setq switch-window-increase 4)
+    (setq switch-window-threshold 2)
+    (setq switch-window-shortcut-style 'qwerty)
+    (setq switch-window-qwerty-shortcuts
+	  '("a" "r" "s" "t" "n" "e" "i")))
+  ;; add to xfk
+  (with-eval-after-load 'xah-fly-keys
+    (define-key xah-fly-command-map (kbd ",") 'switch-window))
+ #+END_SRC
+** Avy
+ #+BEGIN_SRC emacs-lisp
+   (use-package avy
+     :ensure t)
+   ;; add to xfk
+   (with-eval-after-load 'xah-fly-keys
+     (define-key xah-fly-command-map (kbd "v") 'avy-goto-char))
+ #+END_SRC
+** Window Splitting
+ #+BEGIN_SRC emacs-lisp
+   ;; functions for splitting windows
+   (defun split-and-follow-horizontally ()
+     (interactive)
+     (split-window-below)
+     (balance-windows)
+     (other-window 1))
+   (defun split-and-follow-vertically ()
+     (interactive)
+     (split-window-right)
+     (balance-windows)
+     (other-window 1))
+   (defun delete-and-balance-window ()
+     (interactive)
+     (delete-window)
+     (balance-windows))
+   ;; add to xfk
+   (with-eval-after-load 'xah-fly-keys
+     (define-key xah-fly-command-map (kbd "2") 'split-and-follow-horizontally)
+     (define-key xah-fly-command-map (kbd "3") 'split-and-follow-vertically)
+     (define-key xah-fly-command-map (kbd "4") 'delete-and-balance-window))
+ #+END_SRC
+* which-key
+** Displays possible keybindings
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+END_SRC
 * Minor things
 ** Show lines/columns
 #+BEGIN_SRC emacs-lisp
@@ -48,6 +154,12 @@
 #+BEGIN_SRC emacs-lisp
   (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 #+END_SRC
+** Emojify
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :ensure t
+    :config (global-emojify-mode 1))
+#+END_SRC
 * Terminal
 ** Setting default shell to bash
 #+BEGIN_SRC emacs-lisp
@@ -55,14 +167,6 @@
   (defadvice ansi-term (before force-bash)
     (interactive (list my-term-shell)))
   (ad-activate 'ansi-term)
-#+END_SRC
-* which-key
-** Displays possible keybindings
-#+BEGIN_SRC emacs-lisp
-  (use-package which-key
-    :ensure t
-    :init
-    (which-key-mode))
 #+END_SRC
 * Beacon
 ** Easily find cursor
@@ -93,7 +197,6 @@
     (dashboard-setup-startup-hook)
     (setq dashboard-items '((recents . 10)))
     (setq dashboard-banner-logo-title "Boiler Up"))
-
 #+END_SRC
 * Org
 ** Org Bullets
@@ -102,19 +205,6 @@
     :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
-#+END_SRC
-** Fixed bullet sizes
-#+BEGIN_SRC emacs-lisp
-(custom-set-faces
-  '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
-  '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
-  '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
-  '(org-level-4 ((t (:inherit outline-4 :height 0.7))))
-  '(org-level-5 ((t (:inherit outline-5 :height 1.1))))
-  '(org-level-6 ((t (:inherit outline-6 :height 1.1))))
-  '(org-level-7 ((t (:inherit outline-7 :height 1.1))))
-  '(org-level-8 ((t (:inherit outline-5 :height 0.7))))
-)
 #+END_SRC
 ** Basics
 #+BEGIN_SRC emacs-lisp
@@ -140,14 +230,7 @@
 ** smex
 #+BEGIN_SRC emacs-lisp
   (use-package smex
-    :ensure t
-    :init (smex-initialize)
-    :bind
-    ("M-x" . smex))
-#+END_SRC
-** Switch Buffers
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-x") 'ido-switch-buffer)
+    :ensure t)
 #+END_SRC
 * Buffers
 ** Always kill buffer
@@ -172,13 +255,6 @@
     (mapc 'kill-buffer(buffer-list)))
   (global-set-key (kbd "s-k") 'kill-all-buffers)
 #+END_SRC
-* Avy
-#+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t
-    :bind
-    ("M-s" . avy-goto-char))
-#+END_SRC
 * Config
 ** Edit
 #+BEGIN_SRC emacs-lisp
@@ -194,34 +270,6 @@
     (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
   (global-set-key (kbd "C-c r") 'config-reload)
 #+END_SRC
-* Switch-Window
-#+BEGIN_SRC emacs-lisp
-  (use-package switch-window
-    :ensure t
-    :config
-    (setq switch-window-input-style 'minibuffer)
-    (setq switch-window-increase 4)
-    (setq switch-window-threshold 2)
-    (setq switch-window-shortcut-style 'qwerty)
-    (setq switch-window-qwerty-shortcuts
-         '("a" "r" "s" "t" "n" "e" "i"))
-    :bind
-    ([remap other-window] . switch-window))
-#+END_SRC
-* Window Splitting
-#+BEGIN_SRC emacs-lisp
-  (defun split-and-follow-horizontally ()
-    (interactive)
-    (split-window-below)
-    (balance-windows)
-    (other-window 1))
-
-  (defun split-and-follow-vertically ()
-    (interactive)
-    (split-window-right)
-    (balance-windows)
-    (other-window 1))
-#+END_SRC
 * Rainbow
 ** Easier parantheses tracking
 #+BEGIN_SRC emacs-lisp
@@ -229,6 +277,13 @@
     :ensure t
     :init
     (rainbow-delimiters-mode 1))
+#+END_SRC
+** Rainbow-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :init
+      (rainbow-mode 1))
 #+END_SRC
 * Auto Completion
 ** Finish text
@@ -239,15 +294,6 @@
     (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
 * modeline
-** Spaceline
-#+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :ensure t
-    :config
-    (require 'spaceline-config)
-    (setq powerline-default-separator (quote arrow))
-    (spaceline-spacemacs-theme))
-#+END_SRC
 ** Diminish (hides minor modes)
 #+BEGIN_SRC emacs-lisp
   (use-package diminish
@@ -256,59 +302,6 @@
     (diminish 'hungry-delete-mode)
     (diminish 'beacon-mode)
     (diminish 'which-key))
-#+END_SRC
-* Xah fly keys
-** Manual Install
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/lisp/")
-
-  (require 'xah-fly-keys)
-#+END_SRC
-** Creates layout (basically mod-dh, only m and k are swapped)
-#+BEGIN_SRC emacs-lisp
-  (defvar xah--dvorak-to-colemak-mod-dh-matrix-kmap
-    '(("'" . "q")
-      ("," . "w")
-      ("." . "f")
-      ("p" . "p")
-      ("y" . "b")
-      ("f" . "j")
-      ("g" . "l")
-      ("c" . "u")
-      ("r" . "y")
-      ("l" . ";")
-      ("a" . "a")
-      ("o" . "r")
-      ("e" . "s")
-      ("u" . "t")
-      ("i" . "g")
-      ("d" . "m")
-      ("h" . "n")
-      ("t" . "e")
-      ("n" . "i")
-      ("s" . "o")
-      (";" . "z")
-      ("q" . "q")
-      ("j" . "c")
-      ("k" . "d")
-      ("x" . "v")
-      ("b" . "k")
-      ("m" . "h")
-      ("w" . ",")
-      ("v" . ".")
-      ("z" . "/")))
-#+END_SRC
-** Sets layout and activates
-#+BEGIN_SRC emacs-lisp
-  (xah-fly-keys-set-layout "colemak-mod-dh-matrix")
-  (xah-fly-keys 1)
-#+END_SRC
-* pdf-tools
-#+BEGIN_SRC emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :init
-    (pdf-loader-install))
 #+END_SRC
 * docker
 ** dockerfile
@@ -323,3 +316,29 @@
   (use-package docker-compose-mode
     :ensure t)
 #+END_SRC
+* Async
+#+BEGIN_SRC emacs-lisp
+  (use-package async
+    :ensure t
+    :init (dired-async-mode 1))
+#+END_SRC
+* erc
+** Gets rid of clutter
+#+BEGIN_SRC emacs-lisp
+  (setq erc-nick "nosolls")
+  (setq erc-prompt (lambda () (concat "[" (buffer-name) "]")))
+  (setq erc-hide-list '("JOIN" "PART" "QUIT"))
+#+END_SRC
+** Server list
+#+BEGIN_SRC emacs-lisp
+  (setq erc-server-history-list '("irc.freenode.net"
+                                  "localhost"))
+#+END_SRC
+** Highlight nicknames
+#+BEGIN_SRC emacs-lisp
+  (use-package erc-hl-nicks
+    :ensure t
+    :config
+      (erc-update-modules))
+#+END_SRC
+
