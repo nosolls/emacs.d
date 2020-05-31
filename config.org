@@ -1,11 +1,3 @@
-* Theme
-** Cyberpunk
-#+BEGIN_SRC emacs-lisp
-  (use-package cyberpunk-theme
-  :ensure t
-  :init
-    (load-theme 'cyberpunk t))
-#+END_SRC
 * Xah Fly Keys
 ** Save your hands
 #+BEGIN_SRC emacs-lisp

@@ -35,12 +35,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (leuven)))
  '(package-selected-packages
    (quote
-    (emojify rainbow-mode docker-compose-mode dockerfile-mode diminish company rainbow-delimiters switch-window avy smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon which-key aggressive-indent cyberpunk-theme use-package))))
+    (erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-mode rainbow-delimiters smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon emojify aggressive-indent which-key avy switch-window xah-fly-keys use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#d3d3d3" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "xos4" :family "Terminus")))))
+ )
