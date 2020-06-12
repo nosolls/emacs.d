@@ -35,10 +35,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (leuven)))
  '(package-selected-packages
    (quote
-    (erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-mode rainbow-delimiters smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon emojify aggressive-indent which-key avy switch-window use-package))))
+    (cyberpunk-theme erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-mode rainbow-delimiters smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon emojify aggressive-indent which-key avy switch-window xah-fly-keys use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
