@@ -37,7 +37,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (cyberpunk-theme erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-mode rainbow-delimiters smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon emojify aggressive-indent which-key avy switch-window xah-fly-keys use-package))))
+    (leuven-theme cyberpunk-theme erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-mode rainbow-delimiters smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon emojify aggressive-indent which-key avy switch-window xah-fly-keys use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

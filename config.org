@@ -1,10 +1,10 @@
 * Theme
 #+BEGIN_SRC emacs-lisp
-  (use-package cyberpunk-theme
+  (use-package leuven-theme
     :ensure t
     :init
       (add-hook 'after-init-hook 
-	    (lambda () (load-theme 'cyberpunk t))))
+	    (lambda () (load-theme 'leuven t))))
 #+END_SRC
 * Xah Fly Keys
 ** Save your hands
@@ -335,8 +335,10 @@
       (erc-update-modules))
 #+END_SRC
 
-* ssh
+* Singularity mode
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'tramp-remote-process-environment
-	       (format "DISPLAY=%s" (getenv "DISPLAY")))
+  (add-to-list 'load-path "~/.emacs.d/singularity-mode/")
+  (require 'singularity-mode)
+  (add-to-list 'auto-mode-alist '("\\.rec$" . singularity-mode))
+  (add-to-list 'auto-mode-alist '("Singularity\\(\\.[^\\/]*\\)?$" . singularity-mode))
 #+END_SRC
