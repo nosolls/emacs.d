@@ -16,7 +16,6 @@
 (add-hook 'emacs-startup-hook 'startup/reset-gc)
 
 ;; melpa
-
 (require 'package)
 (setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
 			 ("gnu"   . "http://elpa.gnu.org/packages/")
@@ -24,10 +23,15 @@
 			 ("org"   . "https://orgmode.org/elpa/")))
 (package-initialize)
 
+;; set font
+(set-default-font "Terminus 12" nil t)
+
+;; Get use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; Link config file
 (when (file-readable-p "~/.emacs.d/config.org")
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
 (custom-set-variables
@@ -37,7 +41,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (leuven-theme cyberpunk-theme erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-mode rainbow-delimiters smex ido-vertical-mode org-bullets dashboard sudo-edit hungry-delete beacon emojify aggressive-indent which-key avy switch-window xah-fly-keys use-package))))
+    (magit erc-hl-nicks async docker-compose-mode dockerfile-mode diminish company rainbow-delimiters counsel org-bullets sudo-edit emojify aggressive-indent which-key avy switch-window smart-mode-line cyberpunk-theme use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
