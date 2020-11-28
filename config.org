@@ -1,41 +1,45 @@
-* Ivy, Counsel, Swiper
+* Diminish
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+end_src
+* Ivy, counsel, swiper
 #+begin_src emacs-lisp
   (use-package counsel
     :ensure t
     :config
-    (counsel-mode 1)
-    :bind
-    ("M-x" . counsel-M-x)
-    ("C-x C-f" . counsel-find-file)
-    ("M-y" . counsel-yank-pop)
-    ("<f1> f" . counsel-describe-function)
-    ("<f1> v" . counsel-describe-variable)
-    ("<f1> l" . counsel-find-library)
-    ("<f2> i" . counsel-info-lookup-symbol)
-    ("<f2> u" . counsel-unicode-char)
-    ("<f2> j" . counsel-set-variable))
-  (use-package ivy
-    :ensure t
-    :config
-    (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d) ")
-    :bind
-    ("C-x b" . ivy-switch-buffer)
-    ("C-c v" . ivy-push-view)
-    ("C-c V" . ivy-pop-view)
-    ("C-c C-r" . ivy-resume))
-  (use-package swiper
-    :ensure t
-    :bind
-    ("C-s" . swiper-isearch))
+    (setq enable-recursive-minibuffers t)
+    :init
+    (ivy-mode 1)
+    (counsel-mode 1)
+    :diminish ivy-mode counsel-mode)
+  ;; Standard bindings
+  (global-set-key (kbd "C-s") 'swiper)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "M-y") 'counsel-yank-pop)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "<f2> j") 'counsel-set-variable)
+  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+  (global-set-key (kbd "C-c v") 'ivy-push-view)
+  (global-set-key (kbd "C-c V") 'ivy-pop-view)
+  ;; Shell / System tools
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c L") 'counsel-git-log)
 #+end_src
 * which-key
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
     :init
-    (which-key-mode))
+    (which-key-mode)
+    :diminish which-key-mode)
 #+end_src
 * Switch-Window
 #+begin_src emacs-lisp
@@ -49,7 +53,7 @@
     (setq switch-window-qwerty-shortcuts
           '("a" "r" "s" "t" "n" "e" "i"))
     :bind
-        ([remap other-window] . switch-window))
+    ([remap other-window] . switch-window))
  #+end_src
 * Avy
 #+begin_src emacs-lisp
@@ -84,11 +88,11 @@
 * Appearance
 ** Theme
  #+begin_src emacs-lisp
-   (use-package moe-theme
+   (use-package modus-vivendi-theme
      :ensure t
      :init
-       (add-hook 'after-init-hook 
-		(lambda () (load-theme 'moe-dark t))))
+     (add-hook 'after-init-hook
+             (lambda () (load-theme 'modus-vivendi t))))
  #+end_src
 ** Easier parantheses tracking
  #+begin_src emacs-lisp
@@ -97,13 +101,18 @@
      :init
      (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
  #+end_src
-* Minor things
-Surprisingly long for "minor things"
+** Font
+#+begin_src emacs-lisp
+  (set-frame-font "Terminus" nil t)
+#+end_src
+* Quality of Life Changes
+Just the little things.
 ** Show lines/columns
 #+begin_src emacs-lisp
   (line-number-mode 1)
   (column-number-mode 1)
   (setq-default indent-tabs-mode nil)
+  (fringe-mode 1)
 #+end_src
 ** No bell
 #+begin_src emacs-lisp
@@ -147,24 +156,19 @@ Surprisingly long for "minor things"
 #+end_src
 ** Electric
 #+begin_src emacs-lisp
-  (setq electric-pair-pairs '(
-			      (?\( . ?\))
-			      (?\[ . ?\])
-			      (?\{ . ?\})
-			      ))
-  (electric-pair-mode t)
-#+end_src
-** Emojify
-#+begin_src emacs-lisp
-  (use-package emojify
-    :ensure t
-    :config (global-emojify-mode 1))
+  (setq electric-pair-pairs
+        '(
+          (?\( . ?\))
+          (?\[ . ?\])
+          (?\{ . ?\})))
+  (electric-pair-mode 1)
 #+end_src
 ** sudo edit
  #+begin_src emacs-lisp
    (use-package sudo-edit
      :ensure t
-     :bind ("s-e" . sudo-edit))
+     :bind
+     ("s-e" . sudo-edit))
  #+end_src
 ** Terminal
  Setting default shell to bash
@@ -207,7 +211,8 @@ Surprisingly long for "minor things"
   (use-package company
     :ensure t
     :init
-    (add-hook 'after-init-hook 'global-company-mode))
+    (add-hook 'after-init-hook 'global-company-mode)
+    :diminish company-mode)
 #+end_src
 * docker
 ** dockerfile
@@ -239,16 +244,14 @@ Surprisingly long for "minor things"
   (use-package erc-hl-nicks
     :ensure t
     :config
-      (erc-update-modules))
+    (erc-update-modules))
 #+end_src
 * magit
 #+begin_src emacs-lisp
   (use-package magit
     :ensure t
     :config
-    (setq git-commit-summary-max-length 50)
-    :bind
-    ("M-g" . magit-status))
+    (setq git-commit-summary-max-length 50))
 #+end_src
 * vterm
 #+begin_src emacs-lisp
@@ -256,11 +259,20 @@ Surprisingly long for "minor things"
     :ensure t)
 #+end_src
 * dired
+** Subtree
 #+begin_src emacs-lisp
   (use-package dired-subtree
     :ensure t
-    :after dired
-    :bind (:map dired-mode-map
-		("<tab>" . dired-subtree-toggle)
-		("<S-iso-lefttab>" . dired-subtree-cycle)))
+    :bind
+    (:map dired-mode-map
+          ("<tab>" . dired-subtree-toggle)
+          ("<S-iso-lefttab>" . dired-subtree-cycle)))
+#+end_src
+** Async
+#+begin_src emacs-lisp
+  (use-package async
+    :ensure t
+    :diminish dired-async-mode
+    :init
+    (dired-async-mode 1))
 #+end_src

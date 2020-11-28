@@ -1,3 +1,4 @@
+;;; init.el --- My dotfiles -*- coding: utf-8; lexical-binding: t; byte-compile-dynamic: t; -*-
 ;; Garbage collection
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
@@ -15,6 +16,9 @@
 (add-hook 'emacs-startup-hook 'startup/revert-file-name-handler-alist)
 (add-hook 'emacs-startup-hook 'startup/reset-gc)
 
+;; Avoid outdated bytecode
+(setq load-prefer-newer t)
+
 ;; melpa
 (require 'package)
 (setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
@@ -31,3 +35,6 @@
 ;; Link config file
 (when (file-readable-p "~/.emacs.d/config.org")
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+
+;; Move custom-set-variables out
+(setq custom-file "~/.emacs.d/custom.el")
