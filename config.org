@@ -163,6 +163,75 @@ Just nice to have.
       (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
     (global-set-key (kbd "C-c r") 'config-reload)
   #+end_src
+* Completion
+
+Make things a little faster.
+
+*** Ido
+#+begin_src emacs-lisp
+  ;; enable IDO
+  (setq ido-enable-flex-matching nil)
+  (setq ido-create-new-buffer 'always)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+  ;; now vertical
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (ido-vertical-mode 1))
+  ;; smex
+  (use-package smex
+    :ensure t)
+#+end_src
+*** which-key
+
+  Everyone should have this. It's nice to have when you forget a command.
+
+    #+begin_src emacs-lisp
+      (use-package which-key
+        :ensure t
+        :init
+        (which-key-mode)
+        :diminish which-key-mode)
+    #+end_src
+
+*** Finish text
+
+  #+begin_src emacs-lisp
+    (use-package company
+      :ensure t
+      :init
+      (add-hook 'after-init-hook 'global-company-mode)
+      :diminish company-mode)
+  #+end_src
+
+*** docker
+
+**** dockerfile
+
+   #+begin_src emacs-lisp
+     (use-package dockerfile-mode
+       :ensure t
+       :init
+       (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+   #+end_src
+
+**** docker-compose
+
+   #+begin_src emacs-lisp
+     (use-package docker-compose-mode
+       :ensure t)
+   #+end_src
+
+*** go mode
+
+  #+begin_src emacs-lisp
+    (use-package go-mode
+      :ensure t)
+    (autoload 'go-mode "go-mode" nil t)
+    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+  #+end_src
+
 * Text Editing / Navigation
 
 What everyone talks about.
@@ -262,85 +331,6 @@ Just added balancing by default.
     (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m)))
   (define-key xah-fly-command-map (kbd "v") 'avy-goto-char)
 #+end_src
-
-* Completion
-*** Ivy, counsel, swiper
-  #+begin_src emacs-lisp
-    (use-package counsel
-      :ensure t
-      :config
-      (setq ivy-use-virtual-buffers t)
-      (setq enable-recursive-minibuffers t)
-      :init
-      (ivy-mode 1)
-      (counsel-mode 1)
-      :diminish ivy-mode counsel-mode)
-    ;; Standard bindings
-    (define-key xah-fly-command-map (kbd "k") 'swiper)
-    (define-key xah-fly-command-map (kbd "SPC uf") 'counsel-find-file)
-    (global-set-key (kbd "M-y") 'counsel-yank-pop)
-    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-    (global-set-key (kbd "<f1> l") 'counsel-find-library)
-    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-    (global-set-key (kbd "<f2> j") 'counsel-set-variable)
-    (define-key xah-fly-command-map (kbd "SPC t") 'ivy-switch-buffer)
-    (global-set-key (kbd "C-c v") 'ivy-push-view)
-    (global-set-key (kbd "C-c V") 'ivy-pop-view)
-    ;; Shell / System tools
-    (global-set-key (kbd "C-c g") 'counsel-git)
-    (global-set-key (kbd "C-c j") 'counsel-git-grep)
-    (global-set-key (kbd "C-c L") 'counsel-git-log)
-  #+end_src
-*** which-key
-
-  Everyone should have this. It's nice to have when you forget a command.
-
-    #+begin_src emacs-lisp
-      (use-package which-key
-        :ensure t
-        :init
-        (which-key-mode)
-        :diminish which-key-mode)
-    #+end_src
-
-*** Finish text
-
-  #+begin_src emacs-lisp
-    (use-package company
-      :ensure t
-      :init
-      (add-hook 'after-init-hook 'global-company-mode)
-      :diminish company-mode)
-  #+end_src
-
-*** docker
-
-**** dockerfile
-
-   #+begin_src emacs-lisp
-     (use-package dockerfile-mode
-       :ensure t
-       :init
-       (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
-   #+end_src
-
-**** docker-compose
-
-   #+begin_src emacs-lisp
-     (use-package docker-compose-mode
-       :ensure t)
-   #+end_src
-
-*** go mode
-
-  #+begin_src emacs-lisp
-    (use-package go-mode
-      :ensure t)
-    (autoload 'go-mode "go-mode" nil t)
-    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-  #+end_src
 
 * Applications
 
