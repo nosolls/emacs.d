@@ -208,6 +208,7 @@
 (use-package smex
   :ensure t)
 
+;; swiper
 (use-package swiper
   :ensure t)
 (define-key xah-fly-command-map (kbd "k") 'swiper-isearch)
