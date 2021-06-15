@@ -36,6 +36,18 @@
 ;; Move custom-set-variables out
 (setq custom-file "~/.emacs.d/custom.el")
 
+;; Theme
+;; Now upstream in emacs 28
+(use-package modus-vivendi-theme
+  :ensure t
+  :init
+  (add-hook 'after-init-hook
+          (lambda () (load-theme 'modus-vivendi t))))
+
+;; Set Font
+(when (member "Terminus" (font-family-list))
+  (set-frame-font "Terminus-12" t t))
+
 ;; Diminish
 (use-package diminish
   :ensure t)
@@ -125,14 +137,6 @@
   ;; Fix homerow, as I do not use qwerty
   (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m)))
 (define-key xah-fly-command-map (kbd "v") 'avy-goto-word-1)
-
-;; Theme
-;; Now upstream in emacs 28
-(use-package modus-vivendi-theme
-  :ensure t
-  :init
-  (add-hook 'after-init-hook
-          (lambda () (load-theme 'modus-vivendi t))))
 
 ;; Matching parantheses
 (use-package rainbow-delimiters
@@ -312,10 +316,6 @@
    :config
    (pdf-tools-install)
    (setq-default pdf-view-display-size 'fit-page))
-
-;; Set Font
-(when (member "Terminus" (font-family-list))
-  (set-frame-font "Terminus-12" t t))
 
 ;; Config handling
 ;; Edit config
