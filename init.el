@@ -95,7 +95,7 @@
   (setq switch-window-threshold 2)
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-qwerty-shortcuts
-        '("a" "r" "s" "t" "n" "e" "i")))
+        '("a" "r" "s" "t" "n" "e" "i" "o")))
 (define-key xah-fly-command-map (kbd ",") 'switch-window)
 
 ;; Window Splitting
@@ -124,10 +124,10 @@
   :config
   ;; Fix homerow, as I do not use qwerty
   (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m)))
-(define-key xah-fly-command-map (kbd "v") 'avy-goto-char)
+(define-key xah-fly-command-map (kbd "v") 'avy-goto-word-1)
 
 ;; Theme
-;; Now upstream
+;; Now upstream in emacs 28
 (use-package modus-vivendi-theme
   :ensure t
   :init
@@ -193,25 +193,7 @@
 (defadvice ansi-term (before force-bash)
   (interactive (list my-term-shell)))
 (ad-activate 'ansi-term)
-
-;; enable IDO
-(setq ido-enable-flex-matching nil)
-(setq ido-create-new-buffer 'always)
-(setq ido-everywhere t)
-(ido-mode 1)
-;; now vertical
-(use-package ido-vertical-mode
-  :ensure t
-  :init
-  (ido-vertical-mode 1))
-;; smex
-(use-package smex
-  :ensure t)
-
-;; swiper
-(use-package swiper
-  :ensure t)
-(define-key xah-fly-command-map (kbd "k") 'swiper-isearch)
+(setq ad-redefinition-action 'accept)
 
 ;; which-key
 (use-package which-key
@@ -235,11 +217,43 @@
 (use-package docker-compose-mode
   :ensure t)
 
-;; Go
-(use-package go-mode
-  :ensure t)
-(autoload 'go-mode "go-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+;; ivy, counsel, swiper
+(use-package counsel
+  :ensure t
+  :init
+  (counsel-mode 1)
+  :diminish
+  (counsel-mode)
+  :bind
+  ("M-x" . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
+  ("M-y" . counsel-yank-pop)
+  ("<f1> f" . counsel-describe-function)
+  ("<f1> v" . counsel-describe-variable)
+  ("<f1> l" . counsel-find-library)
+  ("<f2> i" . counsel-info-lookup-symbol)
+  ("<f2> u" . counsel-unicode-char)
+  ("<f2> j" . counsel-set-variable)
+  ("C-s" . swiper-isearch))
+(use-package ivy
+  :ensure t
+  :init
+  (ivy-mode 1)
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  :diminish
+  (ivy-mode)
+  :bind
+  ("C-x b" . ivy-switch-buffer)
+  ("C-c v" . ivy-push-view)
+  ("C-c V" . ivy-pop-view)
+  ("C-c C-r" . ivy-resume))
+
+
+(define-key xah-fly-command-map (kbd "a") 'counsel-M-x)
+(define-key xah-fly-command-map (kbd "SPC u f") 'counsel-find-file)
+(define-key xah-fly-command-map (kbd "k") 'swiper-isearch)
 
 ;; Org
 (use-package org-bullets
@@ -250,6 +264,12 @@
 (setq org-src-window-setup 'current-window)
 
 ;; Dired
+;; Async
+(use-package async
+  :ensure t
+  :diminish dired-async-mode
+  :init
+  (dired-async-mode 1))
 ;; Prevent many buffers
 (put 'dired-find-alternate-file 'disabled nil)
 (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
@@ -261,12 +281,6 @@
   (:map dired-mode-map
         ("<tab>" . dired-subtree-toggle)
         ("<S-iso-lefttab>" . dired-subtree-cycle)))
-;; Async
-(use-package async
-  :ensure t
-  :diminish dired-async-mode
-  :init
-  (dired-async-mode 1))
 
 ;; Vterm
 (use-package vterm
@@ -284,7 +298,7 @@
 (setq erc-prompt (lambda () (concat "[" (buffer-name) "]")))
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 ;; server list
-(setq erc-server-history-list '("irc.freenode.net"
+(setq erc-server-history-list '("irc.libera.chat"
                                 "localhost"))
 ;; Highlight nicknames
 (use-package erc-hl-nicks
@@ -298,3 +312,19 @@
    :config
    (pdf-tools-install)
    (setq-default pdf-view-display-size 'fit-page))
+
+;; Set Font
+(when (member "Terminus" (font-family-list))
+  (set-frame-font "Terminus-12" t t))
+
+;; Config handling
+;; Edit config
+(defun config-visit ()
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+(global-set-key (kbd "C-c e") 'config-visit)
+;; Reload config
+(defun config-reload ()
+  (interactive)
+  (load-file "~/.emacs.d/init.el"))
+(global-set-key (kbd "C-c r") 'config-reload)
