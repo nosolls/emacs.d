@@ -1,4 +1,4 @@
-;;; init.el --- My dotfiles -*- coding: utf-8; lexical-binding: t; byte-compile-dynamic: t; -*-
+;;; init.el --- My dotfiles -*- coding: utf-8; lexical-binding: t; -*-
 
 ;; Garbage collection
 (setq gc-cons-threshold 402653184
@@ -47,6 +47,10 @@
 ;; Set Font
 (when (member "Terminus" (font-family-list))
   (set-frame-font "Terminus-12" t t))
+
+;; Eshell and sudo config
+(require 'esh-module)
+(add-to-list 'eshell-modules-list 'eshell-tramp)
 
 ;; Diminish
 (use-package diminish
@@ -125,10 +129,10 @@
   (interactive)
   (delete-window)
   (balance-windows))
-(define-key xah-fly-command-map (kbd "1") 'delete-other-windows)
-(define-key xah-fly-command-map (kbd "2") 'split-and-follow-horizontally)
-(define-key xah-fly-command-map (kbd "3") 'split-and-follow-vertically)
-(define-key xah-fly-command-map (kbd "4") 'delete-and-balance-window)
+(define-key xah-fly-command-map (kbd "SPC 1") 'delete-other-windows)
+(define-key xah-fly-command-map (kbd "SPC 2") 'split-and-follow-horizontally)
+(define-key xah-fly-command-map (kbd "SPC 3") 'split-and-follow-vertically)
+(define-key xah-fly-command-map (kbd "SPC 4") 'delete-and-balance-window)
 
 ;; Avy
 (use-package avy
@@ -212,14 +216,6 @@
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :diminish company-mode)
-
-;; docker
-(use-package dockerfile-mode
-  :ensure t
-  :init
-  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
-(use-package docker-compose-mode
-  :ensure t)
 
 ;; ivy, counsel, swiper
 (use-package counsel
@@ -328,3 +324,10 @@
   (interactive)
   (load-file "~/.emacs.d/init.el"))
 (global-set-key (kbd "C-c r") 'config-reload)
+
+;; Always kill buffer
+(defun kill-current-buffer ()
+  "Kills the current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+(define-key xah-fly-command-map (kbd "SPC l") 'kill-current-buffer)
