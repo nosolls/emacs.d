@@ -54,7 +54,7 @@
 
 ;; Set Font
 (when (member "Terminus" (font-family-list))
-  (set-frame-font "Terminus-16" t t))
+  (set-frame-font "Terminus-18" t t))
 
 ;; Eshell and sudo config
 ;;(require 'esh-module)
@@ -68,6 +68,10 @@
 (use-package evil
   :ensure t
   :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
   (evil-mode 1))
 (setq evil-default-state 'emacs
       evil-emacs-state-modes nil
