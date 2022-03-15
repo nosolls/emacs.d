@@ -130,7 +130,7 @@
 (use-package avy
   :ensure t
   :config
-  ;; Fix homerow, as I do not use qwerty
+  ;; Fix homerow for Colemak Mod-DHm
   (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m))
   :bind
   ("C-;" . avy-goto-word-0))
