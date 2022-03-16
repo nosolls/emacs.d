@@ -28,7 +28,7 @@
 (setq initial-scratch-message "")
 (setq initial-major-mode 'emacs-lisp-mode)
 
-;; melpa
+;; MELPA
 (require 'package)
 (setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
 			 ("gnu"   . "http://elpa.gnu.org/packages/")
@@ -53,8 +53,8 @@
           (lambda () (load-theme 'gruvbox t))))
 
 ;; Set Font
-(when (member "Hack" (font-family-list))
-  (set-frame-font "Hack-18" t t))
+(when (member "Terminus" (font-family-list))
+  (set-frame-font "Terminus-18" t t))
 
 ;; Eshell and sudo config
 ;;(require 'esh-module)
