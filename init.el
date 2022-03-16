@@ -46,15 +46,15 @@
 
 ;; Theme
 ;; Now upstream in emacs 28
-(use-package modus-vivendi-theme
+(use-package gruvbox-theme
   :ensure t
   :init
   (add-hook 'after-init-hook
-          (lambda () (load-theme 'modus-vivendi t))))
+          (lambda () (load-theme 'gruvbox t))))
 
 ;; Set Font
-(when (member "Terminus" (font-family-list))
-  (set-frame-font "Terminus-18" t t))
+(when (member "Hack" (font-family-list))
+  (set-frame-font "Hack-18" t t))
 
 ;; Eshell and sudo config
 ;;(require 'esh-module)
@@ -73,6 +73,7 @@
   (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1))
+;; Choose default states for Evil mode
 (setq evil-default-state 'emacs
       evil-emacs-state-modes nil
       evil-insert-state-modes nil
@@ -84,6 +85,7 @@
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
 (add-hook 'with-editor-mode-hook 'evil-insert-state)
 (add-hook 'view-mode-hook 'evil-emacs-state)
+;; Make cursor movement feel better
 (setq evil-cross-lines t
       evil-move-beyond-eol t
       evil-want-fine-undo t
@@ -106,7 +108,7 @@
   :bind
   ([remap other-window] . switch-window))
 
-;; Window Splitting
+;; Window splitting functions to balance
 (defun split-and-follow-horizontally ()
   (interactive)
   (split-window-below)
@@ -141,7 +143,7 @@
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-;; Fix emacs looks
+;; Fix Emacs looks
 (line-number-mode 1)
 (column-number-mode 1)
 (setq-default indent-tabs-mode nil)
@@ -210,7 +212,7 @@
   (add-hook 'after-init-hook 'global-company-mode)
   :diminish company-mode)
 
-;; ivy, counsel, swiper
+;; Counsel, Swiper
 (use-package counsel
   :ensure t
   :init
@@ -228,6 +230,7 @@
   ("<f2> u" . counsel-unicode-char)
   ("<f2> j" . counsel-set-variable)
   ("C-s" . swiper-isearch))
+;; Ivy
 (use-package ivy
   :ensure t
   :init
