@@ -1,4 +1,4 @@
-;;; init.el --- My dotfiles -*- coding: utf-8; lexical-binding: t; -*-
+;;; init.el --- My emacs config -*- coding: utf-8; lexical-binding: t; -*-
 
 ;; Garbage collection
 (setq gc-cons-threshold 402653184
