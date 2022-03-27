@@ -46,11 +46,11 @@
 
 ;; Theme
 ;; Now upstream in emacs 28
-(use-package gruvbox-theme
+(use-package modus-vivendi-theme
   :ensure t
   :init
   (add-hook 'after-init-hook
-          (lambda () (load-theme 'gruvbox t))))
+          (lambda () (load-theme 'modus-vivendi t))))
 
 ;; Set Font
 (when (member "Terminus" (font-family-list))
@@ -296,6 +296,13 @@
   :ensure t
   :config
   (erc-update-modules))
+
+;; Go mode
+(use-package go-mode
+  :ensure t
+  :config
+  (autoload 'go-mode "go-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
 
 ;; PDF-tools
 (use-package pdf-tools
