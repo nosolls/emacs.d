@@ -24,7 +24,7 @@
 (setq gnutls-min-prime-bits 2048)
 (setq gnutls-algorithm-priority "SECURE128")
 
-;; Fix scratch
+;; Scratch changes
 (setq initial-scratch-message "")
 (setq initial-major-mode 'emacs-lisp-mode)
 
@@ -45,11 +45,11 @@
 (setq custom-file "~/.emacs.d/custom.el")
 
 ;; Theme
-(use-package gruvbox-theme
+(use-package modus-themes
   :ensure t
   :init
   (add-hook 'after-init-hook
-          (lambda () (load-theme 'gruvbox-light-hard t))))
+          (lambda () (load-theme 'modus-operandi t))))
 
 ;; Set Font
 (when (member "Hack" (font-family-list))
@@ -305,12 +305,12 @@
    (pdf-tools-install)
    (setq-default pdf-view-display-size 'fit-page))
 
-;; Config handling
 ;; Edit config
 (defun config-visit ()
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 (global-set-key (kbd "C-c e") 'config-visit)
+
 ;; Reload config
 (defun config-reload ()
   (interactive)
