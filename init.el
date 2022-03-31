@@ -45,16 +45,15 @@
 (setq custom-file "~/.emacs.d/custom.el")
 
 ;; Theme
-;; Now upstream in emacs 28
-(use-package modus-vivendi-theme
+(use-package gruvbox-theme
   :ensure t
   :init
   (add-hook 'after-init-hook
-          (lambda () (load-theme 'modus-vivendi t))))
+          (lambda () (load-theme 'gruvbox-light-hard t))))
 
 ;; Set Font
-(when (member "Terminus" (font-family-list))
-  (set-frame-font "Terminus-18" t t))
+(when (member "Hack" (font-family-list))
+  (set-frame-font "Hack-14" t t))
 
 ;; Eshell and sudo config
 ;;(require 'esh-module)
@@ -135,13 +134,7 @@
   ;; Fix homerow for Colemak Mod-DHm
   (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m))
   :bind
-  ("C-;" . avy-goto-word-0))
-
-;; Matching parantheses
-(use-package rainbow-delimiters
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  ("C-'" . avy-goto-word-0))
 
 ;; Fix Emacs looks
 (line-number-mode 1)
@@ -221,6 +214,7 @@
   (counsel-mode)
   :bind
   ("M-x" . counsel-M-x)
+  ("C-;" . counsel-M-x)
   ("C-x C-f" . counsel-find-file)
   ("M-y" . counsel-yank-pop)
   ("<f1> f" . counsel-describe-function)
