@@ -48,8 +48,7 @@
 (use-package modus-themes
   :ensure t
   :init
-  (add-hook 'after-init-hook
-          (lambda () (load-theme 'modus-operandi t))))
+  (load-theme 'modus-operandi t))
 
 ;; Set Font
 (when (member "Hack" (font-family-list))
@@ -323,3 +322,10 @@
   (interactive)
   (kill-buffer (current-buffer)))
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
+
+;; Kill all buffers
+(defun kill-all-buffers ()
+  "Kills all buffers."
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+(global-set-key (kbd "C-M-s-k") 'kill-all-buffers)
