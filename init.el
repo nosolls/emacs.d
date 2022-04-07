@@ -163,9 +163,8 @@
   (setq switch-window-threshold 2)
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-qwerty-shortcuts
-        '("a" "r" "s" "t" "n" "e" "i" "o"))
-  :bind
-  ([remap other-window] . switch-window))
+        '("a" "r" "s" "t" "n" "e" "i" "o")))
+(define-key xah-fly-command-map (kbd ",") 'switch-window)
 
 ;; Window splitting functions to balance
 (defun split-and-follow-horizontally ()
