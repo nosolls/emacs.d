@@ -41,104 +41,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Quelpa
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
-
 ;; Move custom-set-variables out
 (setq custom-file "~/.emacs.d/custom.el")
-
-;; Diminish
-(use-package diminish
-  :ensure t)
-
-;; Ivy, Counsel, Swiper
-(use-package counsel
-  :ensure t
-  :init
-  (counsel-mode 1)
-  :diminish
-  (counsel-mode)
-  :bind
-  ("M-x" . counsel-M-x)
-  ("C-x C-f" . counsel-find-file)
-  ("M-y" . counsel-yank-pop)
-  ("<f1> f" . counsel-describe-function)
-  ("<f1> v" . counsel-describe-variable)
-  ("<f1> l" . counsel-find-library)
-  ("<f2> i" . counsel-info-lookup-symbol)
-  ("<f2> u" . counsel-unicode-char)
-  ("<f2> j" . counsel-set-variable)
-  ("C-s" . swiper-isearch))
-(use-package ivy
-  :ensure t
-  :init
-  (ivy-mode 1)
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  :diminish
-  (ivy-mode)
-  :bind
-  ("C-x b" . ivy-switch-buffer)
-  ("C-c v" . ivy-push-view)
-  ("C-c V" . ivy-pop-view)
-  ("C-c C-r" . ivy-resume))
-
-;; Disable ctrl/meta shortcuts in xfk
-(setq xah-fly-use-control-key nil)
-(setq xah-fly-use-meta-key nil)
-(setq xah-fly-M-x-command 'counsel-M-x)
-;; Install
-(quelpa '(xah-fly-keys :repo "xahlee/xah-fly-keys" :fetcher github))
-(require 'xah-fly-keys)
-;; Create layout
-(defvar xah--dvorak-to-colemak-mod-dh-matrix-kmap
- '(("'" . "q")
-   ("," . "w")
-   ("." . "f")
-   ("p" . "p")
-   ("y" . "b")
-   ("f" . "j")
-   ("g" . "l")
-   ("c" . "u")
-   ("r" . "y")
-   ("l" . ";")
-   ("a" . "a")
-   ("o" . "r")
-   ("e" . "s")
-   ("u" . "t")
-   ("i" . "g")
-   ("d" . "m")
-   ("h" . "n")
-   ("t" . "e")
-   ("n" . "i")
-   ("s" . "o")
-   (";" . "z")
-   ("q" . "x")
-   ("j" . "c")
-   ("k" . "d")
-   ("x" . "v")
-   ("b" . "k")
-   ("m" . "h")
-   ("w" . ",")
-   ("v" . ".")
-   ("z" . "/")))
-;; set layout
-(xah-fly-keys-set-layout 'colemak-mod-dh-matrix)
-(xah-fly-keys 1)
-(diminish 'xah-fly-keys)
-
-;; Make ESC cancel (C-g)
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-
-;; Adjustments for Ivy, Counsel, Swiper
-(define-key xah-fly-command-map (kbd "a") 'counsel-M-x)
-(define-key xah-fly-command-map (kbd "SPC u f") 'counsel-find-file)
-(define-key xah-fly-command-map (kbd "k") 'swiper-isearch)
 
 ;; Theme
 (use-package modus-themes
@@ -154,6 +58,41 @@
 ;;(require 'esh-module)
 ;;(add-to-list 'eshell-modules-list 'eshell-tramp)
 
+;; Diminish
+(use-package diminish
+  :ensure t)
+
+;; Evil mode
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode 1))
+;; Choose default states for Evil mode
+(setq evil-default-state 'emacs
+      evil-emacs-state-modes nil
+      evil-insert-state-modes nil
+      evil-motion-state-modes nil
+      evil-normal-state-modes '(text-mode prog-mode fundamental-mode
+                                          css-mode conf-mode
+                                          TeX-mode LaTeX-mode
+                                          diff-mode))
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
+(add-hook 'with-editor-mode-hook 'evil-insert-state)
+(add-hook 'view-mode-hook 'evil-emacs-state)
+;; Make cursor movement feel better
+(setq evil-cross-lines t
+      evil-move-beyond-eol t
+      evil-want-fine-undo t
+      evil-symbol-word-search t)
+
+;; Fix C-w for insert state
+(with-eval-after-load 'evil-maps
+  (define-key evil-insert-state-map (kbd "C-w") 'evil-window-map))
+
 ;; Switch-Window
 (use-package switch-window
   :ensure t
@@ -163,8 +102,9 @@
   (setq switch-window-threshold 2)
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-qwerty-shortcuts
-        '("a" "r" "s" "t" "n" "e" "i" "o")))
-(define-key xah-fly-command-map (kbd ",") 'switch-window)
+        '("a" "r" "s" "t" "n" "e" "i" "o"))
+  :bind
+  ([remap other-window] . switch-window))
 
 ;; Window splitting functions to balance
 (defun split-and-follow-horizontally ()
@@ -181,18 +121,19 @@
   (interactive)
   (delete-window)
   (balance-windows))
-(define-key xah-fly-command-map (kbd "SPC 1") 'delete-other-windows)
-(define-key xah-fly-command-map (kbd "SPC 2") 'split-and-follow-horizontally)
-(define-key xah-fly-command-map (kbd "SPC 3") 'split-and-follow-vertically)
-(define-key xah-fly-command-map (kbd "SPC 0") 'delete-and-balance-window)
+(global-set-key (kbd "C-1") 'delete-other-windows)
+(global-set-key (kbd "C-2") 'split-and-follow-horizontally)
+(global-set-key (kbd "C-3") 'split-and-follow-vertically)
+(global-set-key (kbd "C-0") 'delete-and-balance-window)
 
 ;; Avy
 (use-package avy
   :ensure t
   :config
   ;; Fix homerow for Colemak Mod-DHm
-  (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m)))
-(define-key xah-fly-command-map (kbd "v") 'avy-goto-char)
+  (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m))
+  :bind
+  ("C-'" . avy-goto-word-0))
 
 ;; Fix Emacs looks
 (line-number-mode 1)
@@ -262,6 +203,41 @@
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :diminish company-mode)
+
+;; Counsel, Swiper
+(use-package counsel
+  :ensure t
+  :init
+  (counsel-mode 1)
+  :diminish
+  (counsel-mode)
+  :bind
+  ("M-x" . counsel-M-x)
+  ("C-;" . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
+  ("M-y" . counsel-yank-pop)
+  ("<f1> f" . counsel-describe-function)
+  ("<f1> v" . counsel-describe-variable)
+  ("<f1> l" . counsel-find-library)
+  ("<f2> i" . counsel-info-lookup-symbol)
+  ("<f2> u" . counsel-unicode-char)
+  ("<f2> j" . counsel-set-variable)
+  ("C-s" . swiper-isearch))
+;; Ivy
+(use-package ivy
+  :ensure t
+  :init
+  (ivy-mode 1)
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  :diminish
+  (ivy-mode)
+  :bind
+  ("C-x b" . ivy-switch-buffer)
+  ("C-c v" . ivy-push-view)
+  ("C-c V" . ivy-pop-view)
+  ("C-c C-r" . ivy-resume))
 
 ;; Org
 (use-package org-bullets
