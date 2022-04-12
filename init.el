@@ -45,10 +45,10 @@
 (setq custom-file "~/.emacs.d/custom.el")
 
 ;; Theme
-(use-package modus-themes
+(use-package gruvbox-theme
   :ensure t
   :init
-  (load-theme 'modus-operandi t))
+  (load-theme 'gruvbox t))
 
 ;; Set Font
 (when (member "Hack" (font-family-list))
@@ -276,9 +276,10 @@
   :config
   (setq git-commit-summary-max-length 50))
 
-;; erc
-;; Handle clutter / set name
+;; ERC
+;; Set alias
 (setq erc-nick "nosolls")
+;; Handle clutter
 (setq erc-prompt (lambda () (concat "[" (buffer-name) "]")))
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 ;; server list
