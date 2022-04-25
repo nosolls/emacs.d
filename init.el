@@ -63,54 +63,36 @@
 (use-package diminish
   :ensure t)
 
-;; Fido
-(fido-vertical-mode 1)
+;; Evil mode
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode 1))
+;; Choose default states for Evil mode
+(setq evil-default-state 'emacs
+      evil-emacs-state-modes nil
+      evil-insert-state-modes nil
+      evil-motion-state-modes nil
+      evil-normal-state-modes '(text-mode prog-mode fundamental-mode
+                                          css-mode conf-mode
+                                          TeX-mode LaTeX-mode
+                                          diff-mode))
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
+(add-hook 'with-editor-mode-hook 'evil-insert-state)
+(add-hook 'view-mode-hook 'evil-emacs-state)
+;; Make cursor movement feel better
+(setq evil-cross-lines t
+      evil-move-beyond-eol t
+      evil-want-fine-undo t
+      evil-symbol-word-search t)
 
-;; Disable ctrl/meta shortcuts in xfk
-(setq xah-fly-use-control-key nil)
-(setq xah-fly-use-meta-key nil)
-;; Install
-(use-package xah-fly-keys
-  :ensure t)
-;; Create layout
-(defvar xah--dvorak-to-colemak-mod-dh-matrix-kmap
- '(("'" . "q")
-   ("," . "w")
-   ("." . "f")
-   ("p" . "p")
-   ("y" . "b")
-   ("f" . "j")
-   ("g" . "l")
-   ("c" . "u")
-   ("r" . "y")
-   ("l" . ";")
-   ("a" . "a")
-   ("o" . "r")
-   ("e" . "s")
-   ("u" . "t")
-   ("i" . "g")
-   ("d" . "m")
-   ("h" . "n")
-   ("t" . "e")
-   ("n" . "i")
-   ("s" . "o")
-   (";" . "z")
-   ("q" . "x")
-   ("j" . "c")
-   ("k" . "d")
-   ("x" . "v")
-   ("b" . "k")
-   ("m" . "h")
-   ("w" . ",")
-   ("v" . ".")
-   ("z" . "/")))
-;; set layout
-(xah-fly-keys-set-layout 'colemak-mod-dh-matrix)
-(xah-fly-keys 1)
-(diminish 'xah-fly-keys)
-
-;; Make ESC cancel (C-g)
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+;; Fix C-w for insert state
+(with-eval-after-load 'evil-maps
+  (define-key evil-insert-state-map (kbd "C-w") 'evil-window-map))
 
 ;; Switch-Window
 (use-package switch-window
@@ -121,8 +103,9 @@
   (setq switch-window-threshold 2)
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-qwerty-shortcuts
-        '("a" "r" "s" "t" "n" "e" "i" "o")))
-(define-key xah-fly-command-map (kbd ",") 'switch-window)
+        '("a" "r" "s" "t" "n" "e" "i" "o"))
+  :bind
+  ([remap other-window] . switch-window))
 
 ;; Window splitting functions to balance
 (defun split-and-follow-horizontally ()
@@ -139,18 +122,10 @@
   (interactive)
   (delete-window)
   (balance-windows))
-(define-key xah-fly-command-map (kbd "SPC 1") 'delete-other-windows)
-(define-key xah-fly-command-map (kbd "SPC 2") 'split-and-follow-horizontally)
-(define-key xah-fly-command-map (kbd "SPC 3") 'split-and-follow-vertically)
-(define-key xah-fly-command-map (kbd "SPC 4") 'delete-and-balance-window)
-
-;; Avy
-(use-package avy
-  :ensure t
-  :config
-  ;; Fix homerow for Colemak Mod-DHm
-  (setq avy-keys '(?a ?r ?s ?t ?n ?e ?i ?o ?g ?m)))
-(define-key xah-fly-command-map (kbd "v") 'avy-goto-word-1)
+(global-set-key (kbd "C-1") 'delete-other-windows)
+(global-set-key (kbd "C-2") 'split-and-follow-horizontally)
+(global-set-key (kbd "C-3") 'split-and-follow-vertically)
+(global-set-key (kbd "C-0") 'delete-and-balance-window)
 
 ;; Fix Emacs looks
 (blink-cursor-mode -1)
@@ -252,12 +227,6 @@
 ;; Vterm
 (use-package vterm
   :ensure t)
-
-;; SLIME
-(use-package slime
-  :ensure t
-  :config
-  (setq inferior-lisp-program "sbcl"))
 
 ;; magit
 (use-package magit
