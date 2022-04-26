@@ -1,5 +1,11 @@
 ;;; init.el --- My emacs config -*- coding: utf-8; lexical-binding: t; -*-
 
+;; Native comp
+(setq native-comp-async-report-warnings-errors nil)
+(setq comp-deferred-compilation t)
+(add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
+(setq package-native-compile t)
+
 ;; Garbage collection
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
@@ -33,8 +39,7 @@
 (setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
 			 ("gnu"   . "http://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")
-			 ("org"   . "https://orgmode.org/elpa/")
-             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+			 ("org"   . "https://orgmode.org/elpa/")))
 (package-initialize)
 
 ;; Get use-package
@@ -46,10 +51,10 @@
 (setq custom-file "~/.emacs.d/custom.el")
 
 ;; Theme
-(use-package gruvbox-theme
+(use-package modus-themes
   :ensure t
   :init
-  (load-theme 'gruvbox t))
+  (load-theme 'modus-operandi t))
 
 ;; Set Font
 (when (member "Hack" (font-family-list))
@@ -62,6 +67,9 @@
 ;; Diminish
 (use-package diminish
   :ensure t)
+
+;; fido mode
+(fido-vertical-mode 1)
 
 ;; Evil mode
 (use-package evil
@@ -89,10 +97,6 @@
       evil-move-beyond-eol t
       evil-want-fine-undo t
       evil-symbol-word-search t)
-
-;; Fix C-w for insert state
-(with-eval-after-load 'evil-maps
-  (define-key evil-insert-state-map (kbd "C-w") 'evil-window-map))
 
 ;; Switch-Window
 (use-package switch-window
@@ -255,13 +259,6 @@
   :config
   (autoload 'go-mode "go-mode" nil t)
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
-
-;; PDF-tools
-(use-package pdf-tools
-   :ensure t
-   :config
-   (pdf-tools-install)
-   (setq-default pdf-view-display-size 'fit-page))
 
 ;; Edit config
 (defun config-visit ()
