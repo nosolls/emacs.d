@@ -54,10 +54,6 @@
 (when (member "Hack" (font-family-list))
   (set-frame-font "Hack-14" t t))
 
-;; Eshell and sudo config
-;;(require 'esh-module)
-;;(add-to-list 'eshell-modules-list 'eshell-tramp)
-
 ;; Diminish
 (use-package diminish
   :ensure t)
