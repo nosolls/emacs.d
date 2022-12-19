@@ -116,10 +116,10 @@
   (interactive)
   (delete-window)
   (balance-windows))
-(global-set-key (kbd "C-1") 'delete-other-windows)
-(global-set-key (kbd "C-2") 'split-and-follow-horizontally)
-(global-set-key (kbd "C-3") 'split-and-follow-vertically)
-(global-set-key (kbd "C-0") 'delete-and-balance-window)
+(global-set-key (kbd "C-x 1") 'delete-other-windows)
+(global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+(global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+(global-set-key (kbd "C-x 0") 'delete-and-balance-window)
 
 ;; Fix Emacs looks
 (blink-cursor-mode -1)
