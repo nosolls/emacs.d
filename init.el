@@ -1,11 +1,5 @@
 ;;; init.el --- My emacs config -*- coding: utf-8; lexical-binding: t; -*-
 
-;; Native comp
-(setq native-comp-async-report-warnings-errors nil)
-(setq comp-deferred-compilation t)
-(add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
-(setq package-native-compile t)
-
 ;; Garbage collection
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
@@ -201,42 +195,12 @@
   (add-hook 'after-init-hook 'global-company-mode)
   :diminish company-mode)
 
-;; Org
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 ;; Same Window for org
 (setq org-src-window-setup 'current-window)
-
-;; Dired
-;; Async
-(use-package async
-  :ensure t
-  :diminish dired-async-mode
-  :init
-  (dired-async-mode 1))
-;; Prevent many buffers
-(put 'dired-find-alternate-file 'disabled nil)
-(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-(define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))
-;; Subtree
-(use-package dired-subtree
-  :ensure t
-  :bind
-  (:map dired-mode-map
-        ("<tab>" . dired-subtree-toggle)
-        ("<S-iso-lefttab>" . dired-subtree-cycle)))
 
 ;; Vterm
 (use-package vterm
   :ensure t)
-
-;; magit
-(use-package magit
-  :ensure t
-  :config
-  (setq git-commit-summary-max-length 50))
 
 ;; ERC
 ;; Set alias
@@ -252,13 +216,6 @@
   :ensure t
   :config
   (erc-update-modules))
-
-;; Go mode
-(use-package go-mode
-  :ensure t
-  :config
-  (autoload 'go-mode "go-mode" nil t)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
 
 ;; Edit config
 (defun config-visit ()
