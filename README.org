@@ -1,2 +1,2 @@
 * emacs.d
-My emacs files. May change often.
+My emacs files. May change often (or not).
